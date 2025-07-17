@@ -1,13 +1,15 @@
-FROM apache/spark:3.4.1-python3
+FROM bitnami/spark:3.4.1
 
-# Copier les jars Kafka + ClickHouse dans le dossier jars de Spark
-COPY spark_jars/*.jar /opt/spark/jars/
+WORKDIR /opt/bitnami/spark
 
-# Copier le script PySpark dans le dossier de travail Spark
-COPY spark/spark_streaming.py /opt/spark/work-dir/
+# Installer curl
+USER root
+RUN install_packages curl
 
-# Mettre le dossier de travail par défaut
-WORKDIR /opt/spark/work-dir
+# Télécharger les JARs nécessaires pour Kafka
+RUN curl -L -o jars/spark-sql-kafka-0-10_2.12-3.4.1.jar https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.4.1/spark-sql-kafka-0-10_2.12-3.4.1.jar && \
+    curl -L -o jars/kafka-clients-3.2.0.jar https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.2.0/kafka-clients-3.2.0.jar && \
+    curl -L -o jars/spark-token-provider-kafka-0-10_2.12-3.4.1.jar https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.4.1/spark-token-provider-kafka-0-10_2.12-3.4.1.jar
 
-# Par défaut, lancer le master (tu peux overrider dans docker-compose)
-CMD ["/opt/spark/sbin/start-master.sh", "&&", "tail", "-f", "/opt/spark/logs/*master*.out"]
+# Copier ton script Spark
+COPY spark/spark_streaming.py /opt/bitnami/spark/work-dir/spark_streaming.py
