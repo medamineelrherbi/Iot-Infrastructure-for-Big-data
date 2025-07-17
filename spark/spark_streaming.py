@@ -10,7 +10,8 @@ from pyspark.sql.types import StructType, StringType, FloatType
 
 spark = SparkSession.builder \
     .appName("IoTStreamProcessor") \
-    .master("spark://spark-master:7077") \
+    .master("spark://" \
+    "spark-master:7077") \
     .getOrCreate()
 # Schema with all possible fields and a "type" field
 schema = StructType() \
@@ -56,37 +57,37 @@ aggregated_df = env_df \
 # Write functions for each sink (ClickHouse tables)
 def write_env(batch_df, epoch_id):
     batch_df.write.format("jdbc") \
-        .option("url", "jdbc:clickhouse://clickhouse:8123/default") \
+        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
         .option("dbtable", "iot_env") \
-        .option("user", "default") \
-        .option("password", "") \
+        .option("user", "admin") \
+        .option("password", "admin") \
         .mode("append") \
         .save()
 
 def write_vib(batch_df, epoch_id):
     batch_df.write.format("jdbc") \
-        .option("url", "jdbc:clickhouse://clickhouse:8123/default") \
+        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
         .option("dbtable", "iot_vibration") \
-        .option("user", "default") \
-        .option("password", "") \
+        .option("user", "admin") \
+        .option("password", "admin") \
         .mode("append") \
         .save()
 
 def write_danger_env(batch_df, epoch_id):
     batch_df.write.format("jdbc") \
-        .option("url", "jdbc:clickhouse://clickhouse:8123/default") \
+        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
         .option("dbtable", "iot_env_danger") \
-        .option("user", "default") \
-        .option("password", "") \
+        .option("user", "admin") \
+        .option("password", "admin") \
         .mode("append") \
         .save()
 
 def write_danger_vib(batch_df, epoch_id): # the arguments (batch_id,epoch_id) are necessary to be passed to foreachBatch
     batch_df.write.format("jdbc") \
-        .option("url", "jdbc:clickhouse://clickhouse:8123/default") \
+        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
         .option("dbtable", "iot_vib_danger") \
-        .option("user", "default") \
-        .option("password", "") \
+        .option("user", "admin") \
+        .option("password", "admin") \
         .mode("append") \
         .save()
 
@@ -98,10 +99,10 @@ def write_avg(batch_df, epoch_id):
         "avg_temp",
         "avg_humidity"
     ).write.format("jdbc") \
-      .option("url", "jdbc:clickhouse://clickhouse:8123/default") \
+      .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
       .option("dbtable", "iot_env_avg_1min") \
-      .option("user", "default") \
-      .option("password", "") \
+      .option("user", "admin") \
+      .option("password", "admin") \
       .mode("append") \
       .save()
 

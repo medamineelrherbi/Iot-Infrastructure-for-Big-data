@@ -24,6 +24,9 @@ services:
     ports:
       - "8123:8123"
       - "9000:9000"
+    environment:
+      - CLICKHOUSE_USER=admin
+      - CLICKHOUSE_PASSWORD=admin
     volumes:
       - ./clickhouse/init.sql:/docker-entrypoint-initdb.d/init.sql
     ulimits:

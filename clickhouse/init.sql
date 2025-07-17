@@ -1,3 +1,8 @@
+CREATE DATABASE IF NOT EXISTS iot_data;
+
+-- Utiliser la base
+USE iot_data;
+
 CREATE TABLE IF NOT EXISTS iot_env (
   device_id String,
   temperature Float32,
@@ -36,3 +41,4 @@ CREATE TABLE IF NOT EXISTS iot_env_avg_1min (
   avg_humidity Float32
 ) ENGINE = MergeTree()
 ORDER BY window_start;
+
