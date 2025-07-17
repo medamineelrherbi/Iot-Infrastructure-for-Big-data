@@ -1,0 +1,76 @@
+services:
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/bitnami/kafka
+    environment:
+      - KAFKA_KRAFT_CLUSTER_ID=Rhz2EA63T_W214c1iBnu9Q
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9094
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9093,EXTERNAL://:9092,CONTROLLER://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka:9093,EXTERNAL://localhost:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - ALLOW_PLAINTEXT_LISTENER=yes
+
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    container_name: clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./clickhouse/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+
+  spark-master:
+    image: custom-spark:3.4.1
+    container_name: spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      - ~/.ivy2:/home/spark/.ivy2  # montage du cache Ivy de la machine hôte
+
+    command: bash -c "/opt/spark/sbin/start-master.sh && tail -f /opt/spark/logs/*master*.out"
+
+  spark-worker:
+    image: custom-spark:3.4.1
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    volumes:
+      - ~/.ivy2:/home/spark/.ivy2  # montage du cache Ivy de la machine hôte
+    command: bash -c "/opt/spark/sbin/start-worker.sh spark://spark-master:7077 && tail -f /opt/spark/logs/*worker*.out"
+
+  superset:
+    image: apache/superset
+    container_name: superset
+    ports:
+      - "8088:8088"
+    depends_on:
+      - clickhouse
+    environment:
+      - SUPERSET_SECRET_KEY='xOvhA1P3n3sL9+bC/dEaG7hJkF8iN6mR5tYwU2zV0cQ4bE7lP='
+    volumes:
+      - superset_data:/app/superset_home
+    command: >
+      bash -c "
+        pip install 'clickhouse-sqlalchemy==0.2.6' 'sqlalchemy<2.0' &&
+        superset db upgrade &&
+        superset fab create-admin --username admin --firstname Admin --lastname admin --email admin@superset.com --password admin &&
+        superset init &&
+        superset run -h 0.0.0.0 -p 8088"
+
+volumes:
+  kafka_data:
+  superset_data:
