@@ -58,6 +58,8 @@ services:
       - "7077:7077"
     volumes:
       - ~/.ivy2:/home/spark/.ivy2
+      - ./spark:/opt/bitnami/spark/work-dir
+
 
   spark-worker:
     image: custom-spark:3.4.1
@@ -74,6 +76,8 @@ services:
         condition: service_healthy
     volumes:
       - ~/.ivy2:/home/spark/.ivy2
+      - ./spark:/opt/bitnami/spark/work-dir
+
 
   superset:
     image: apache/superset

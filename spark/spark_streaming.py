@@ -31,8 +31,8 @@ json_df = df.selectExpr("CAST(value AS STRING) as json")
 data_df = json_df.select(from_json(col("json"), schema).alias("data")).select("data.*")
 
 # Separate DataFrames for each type
-env_df = data_df.filter(col("type") == "env").drop("type")
-vib_df = data_df.filter(col("type") == "vibration").drop("type")
+env_df = data_df.filter(col("type") == "env").select("device_id", "temperature", "humidity", "timestamp")
+vib_df = data_df.filter(col("type") == "vibration").select("device_id", "vibration_level", "timestamp")
 
 # Example: Detect dangerous env data
 danger_env_df = env_df.filter("temperature > 35 AND humidity > 70")
@@ -57,37 +57,29 @@ aggregated_df = env_df \
 # Write functions for each sink (ClickHouse tables)
 def write_env(batch_df, epoch_id):
     batch_df.write.format("jdbc") \
-        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
+        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data?user=admin&password=admin") \
         .option("dbtable", "iot_env") \
-        .option("user", "admin") \
-        .option("password", "admin") \
         .mode("append") \
         .save()
 
 def write_vib(batch_df, epoch_id):
     batch_df.write.format("jdbc") \
-        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
+        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data?user=admin&password=admin") \
         .option("dbtable", "iot_vibration") \
-        .option("user", "admin") \
-        .option("password", "admin") \
         .mode("append") \
         .save()
 
 def write_danger_env(batch_df, epoch_id):
     batch_df.write.format("jdbc") \
-        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
+        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data?user=admin&password=admin") \
         .option("dbtable", "iot_env_danger") \
-        .option("user", "admin") \
-        .option("password", "admin") \
         .mode("append") \
         .save()
 
 def write_danger_vib(batch_df, epoch_id): # the arguments (batch_id,epoch_id) are necessary to be passed to foreachBatch
     batch_df.write.format("jdbc") \
-        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
+        .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data?user=admin&password=admin") \
         .option("dbtable", "iot_vib_danger") \
-        .option("user", "admin") \
-        .option("password", "admin") \
         .mode("append") \
         .save()
 
@@ -99,10 +91,8 @@ def write_avg(batch_df, epoch_id):
         "avg_temp",
         "avg_humidity"
     ).write.format("jdbc") \
-      .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data") \
+      .option("url", "jdbc:clickhouse://clickhouse:8123/iot_data?user=admin&password=admin") \
       .option("dbtable", "iot_env_avg_1min") \
-      .option("user", "admin") \
-      .option("password", "admin") \
       .mode("append") \
       .save()
 
