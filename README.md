@@ -38,7 +38,7 @@ This project builds a real-time Big Data pipeline that ingests, processes, store
 - clickhouse: Lightweight columnar DB for analytics
 - superset: Data visualization and dashboarding tool
 All services are configured to communicate internally in the Docker network, with external ports exposed as needed.
-
+```
 🚀 Getting Started
 1. Clone the repo:
 git clone https://github.com/medamineelrherbi/Iot-Infrastructure-for-Big-data
