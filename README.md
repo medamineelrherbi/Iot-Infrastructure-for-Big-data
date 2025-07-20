@@ -94,9 +94,7 @@ Writes two ClickHouse tables: iot_env_all and iot_env_dangerous
 Superset queries ClickHouse directly using SQLAlchemy to visualize trends
 
 📁 Project Structure
-pgsql
-Copier
-Modifier
+```
 .
 ├── docker-compose.yml
 ├── Dockerfile
@@ -124,7 +122,7 @@ Mohamed Amine El Rherbi
 
 📝 License
 This project is licensed under the MIT License.
-
+```
 
 
 ---
