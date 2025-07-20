@@ -81,7 +81,7 @@ Spark	Stream processing
 ClickHouse	Fast time-series database
 Superset	Dashboards and BI
 Docker Compose	Orchestration of services
-
+```
 🧠 How it Works
 A Python IoT simulator (run locally) sends JSON messages to Kafka
 
@@ -92,7 +92,7 @@ It filters “dangerous” combinations (e.g. high temperature + vibration)
 Writes two ClickHouse tables: iot_env_all and iot_env_dangerous
 
 Superset queries ClickHouse directly using SQLAlchemy to visualize trends
-
+```
 📁 Project Structure
 ```
 .
