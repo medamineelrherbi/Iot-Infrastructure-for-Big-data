@@ -71,7 +71,7 @@ services:
       - SPARK_WORKER_CORES=1
     depends_on:
       spark-master:
-        condition: service_started # ou service_healthy si vous en ajoutez un
+        condition: service_started 
       clickhouse:
         condition: service_healthy
     volumes:
