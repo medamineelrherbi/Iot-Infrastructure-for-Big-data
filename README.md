@@ -65,13 +65,13 @@ Alert Count and Trend over Time
 Device-specific Analysis
 
 📷 Sample Visualizations:
-![Architecture](./assets/Capture1.png)
-![Architecture](./assets/Capture2.png)
-![Architecture](./assets/Capture3.png)
-![Architecture](./assets/Capture4.png)
-![Architecture](./assets/Capture5.png)
-![Architecture](./assets/Capture6.png)
-![Architecture](./assets/Capture7.png)
+![Architecture](./assets/Capture1.PNG)
+![Architecture](./assets/Capture2.PNG)
+![Architecture](./assets/Capture3.PNG)
+![Architecture](./assets/Capture4.PNG)
+![Architecture](./assets/Capture5.PNG)
+![Architecture](./assets/Capture6.PNG)
+![Architecture](./assets/Capture7.PNG)
 
 
 💻 Tech Stack
