@@ -58,6 +58,14 @@ Superset	http://localhost:8088	admin / admin
 Spark UI	http://localhost:8080	-
 ClickHouse	http://localhost:8123	admin / admin
 ```
+4. to create a kafka topic (iot-data) execute the following
+``` 
+docker exec -it kafka kafka-topics.sh --create --topic iot-data --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+```
+5. to run the spark job execute the following in the cmd
+```
+docker exec -it spark-master /bin/bash -c "spark-submit --master spark://spark-master:7077 /opt/bitnami/spark/work-dir/spark_streaming.py"
+```
 📊 Dashboards (Apache Superset)
 Once the pipeline is running, Superset dashboards will present:
 
@@ -92,9 +100,9 @@ A Python IoT simulator (run locally) sends JSON messages to Kafka
 
 Spark reads messages using Structured Streaming
 
-It filters “dangerous” combinations (e.g. high temperature + vibration)
+It filters “dangerous” combinations and aggregates the data by one-minute intervals. (e.g. high vibration, a dangerous combination between temperature and humidity "temp > 70 & humidity > 35")
 
-Writes two ClickHouse tables: iot_env_all and iot_env_dangerous
+Writes 4   ClickHouse tables: iot_env, iot_env_danger, iot_vibration, iot_vib_danger, iot_env_avg_1min
 
 Superset queries ClickHouse directly using SQLAlchemy to visualize trends
 ```
@@ -114,6 +122,9 @@ Superset queries ClickHouse directly using SQLAlchemy to visualize trends
 │   ├── architecture.png
 │   ├── pictures and videos
 ├── spark_jars/
+│   ├── clickhouse-jdbc-0.3.2.jar
+│   ├── kafka-clients-3.4.1.jar
+│   ├── spark-sql-kafka...
 └── README.md
 
 👨‍💻 Author
