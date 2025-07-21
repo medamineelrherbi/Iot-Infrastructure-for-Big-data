@@ -1,4 +1,4 @@
-# 🚀 Real-Time IoT Data Infrastructure with Kafka, Spark & ClickHouse
+# 🚀 Real-Time IoT Data Infrastructure with Kafka, Spark, ClickHouse & Superset
 
 ![Architecture](./assets/architecture.png)
 
