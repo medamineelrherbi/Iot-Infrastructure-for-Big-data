@@ -39,16 +39,20 @@ This project builds a real-time Big Data pipeline that ingests, processes, store
 - superset: Data visualization and dashboarding tool
 All services are configured to communicate internally in the Docker network, with external ports exposed as needed.
 ```
-```
+
 🚀 Getting Started
 1. Clone the repo:
+```
 git clone https://github.com/medamineelrherbi/Iot-Infrastructure-for-Big-data
-cd iot-bigdata-pipeline
+```
 2. Run the stack:
+```
 docker-compose up --build
+```
 Wait for all services (especially Spark & ClickHouse) to start. Superset may take ~30 seconds on the first run.
 
 3. Access UIs:
+```
 Service	URL	Credentials
 Superset	http://localhost:8088	admin / admin
 Spark UI	http://localhost:8080	-
