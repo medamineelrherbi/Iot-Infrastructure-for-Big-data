@@ -1,8 +1,10 @@
 # 🚀 Real-Time IoT Data Infrastructure with Kafka, Spark, ClickHouse & Superset
 
 ![Architecture](./assets/architecture.png)
+## Demo Video
 
-![Watch the demonstration](https://github.com/user-attachments/assets/adac1090-fbc7-4a49-a51f-723df3db1098)
+🎥 Watch the demonstration:  
+https://github.com/user-attachments/assets/adac1090-fbc7-4a49-a51f-723df3db1098
 
 ---
 
