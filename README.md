@@ -4,7 +4,13 @@
 ## Demo Video
 
 🎥 Watch the demonstration:  
-https://github.com/user-attachments/assets/adac1090-fbc7-4a49-a51f-723df3db1098
+
+
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/adac1090-fbc7-4a49-a51f-723df3db1098" width="100%" controls>
+    Your browser does not support the video tag.
+  </video>
+</p>
 
 ---
 
